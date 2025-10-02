@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Shelf | Cocktail Catalog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font stack (default) but specifically define custom style for the header -->
+    <style>
+        /* Custom font and kerning for the required "Book Shelf" title */
+        .custom-header {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 700; /* Bold */
+            letter-spacing: -0.1em; /* Low kerning (tight) */
+            line-height: 1;
+        }
+
+        /* Set a default style for the scrollbar to match the dark theme */
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background-color: #4a4a4a;
+            border-radius: 4px;
+        }
+        body::-webkit-scrollbar-track {
+            background-color: #1a1a1a;
+        }
+
+        /* Basic container sizing */
+        #app-container {
+            min-height: 100vh;
+        }
+
+        /* Responsive image aspect ratio for covers */
+        .book-cover {
+            aspect-ratio: 1 / 1.5; /* Standard book aspect ratio */
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-100 antialiased">
+
+    <!-- Main Application Container -->
+    <div id="app-container" class="max-w-screen-lg mx-auto p-4 sm:p-6">
+
+        <!-- Header Section -->
+        <header class="text-center pb-8 pt-4">
+            <!-- Logo -->
+            <img src="https://i.ibb.co/VWpyDwZQ/tabac-logo.png" alt="Tabac Logo" class="mx-auto w-24 h-auto mb-4 rounded-lg shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/96x96/000/fff?text=Logo+Error';" />
+            
+            <!-- Title -->
+            <h1 class="custom-header text-5xl sm:text-7xl uppercase text-white tracking-tighter">
+                Book Shelf
+            </h1>
+        </header>
+
+        <!-- Main Content Area - Books -->
+        <main id="book-catalog" class="space-y-12">
+            <!-- Content will be injected here by JavaScript -->
+        </main>
+
+    </div>
+
+    <!-- Modal for Book Details and Download Option -->
+    <div id="book-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-95 p-4 sm:p-8" onclick="closeModal(event)">
+        <div class="max-w-sm mx-auto my-12 bg-gray-900 p-6 rounded-xl shadow-2xl" onclick="event.stopPropagation()">
+            <div id="modal-content">
+                <!-- Book details will be injected here -->
+            </div>
+            <div class="mt-6 text-right">
+                <button onclick="closeModal()" class="px-6 py-3 bg-gray-700 text-white rounded-lg shadow-lg hover:bg-gray-600 transition duration-150">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Define the book data with titles, authors, and real cover URLs
+        const bookData = {
+            "Beginner Cocktails": [
+                { title: "The Bar Book", author: "Jeffrey Morgenthaler", coverUrl: "https://m.media-amazon.com/images/I/91QkXO+aqsL.jpg" },
+                { title: "12 Bottle Bar", author: "David and Lesley Solmonson", coverUrl: "https://m.media-amazon.com/images/I/81tUJ2pv5bL.jpg" },
+                { title: "Death & Co.", author: "David Kaplan", coverUrl: "https://m.media-amazon.com/images/I/71YSHQg-bgL._UF894,1000_QL80_.jpg" },
+                { title: "The PDT Cocktail Book", author: "Jim Meehan", coverUrl: "https://cdn.foyles.co.uk/bookjackets/large/9781/4027/9781402779237.jpg" },
+                { title: "The Joy of Mixology", author: "Gary Regan", coverUrl: "https://m.media-amazon.com/images/I/51gHn9wGkYL._UF894,1000_QL80_.jpg" },
+                { title: "The Savoy Cocktail Book", author: "Harry Craddock", coverUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1328840837i/2087365.jpg" },
+                { title: "Vintage Spirits and Forgotten Cocktails", author: "Ted Haigh", coverUrl: "https://m.media-amazon.com/images/I/A1fhIRlvGuL.jpg" },
+                { title: "Regarding Cocktails", author: "Sasha Petraske", coverUrl: "https://m.media-amazon.com/images/I/91Nb+CXQV+L.jpg" },
+                { title: "The Fine Art of Mixing Drinks", author: "David Embury", coverUrl: "https://m.media-amazon.com/images/I/81hImUFQWYL.jpg" }
+            ],
+            "Intermediate Cocktails": [
+                { title: "Liquid Intelligence", author: "Dave Arnold", coverUrl: "https://m.media-amazon.com/images/I/61lvP3+syOL.jpg" },
+                { title: "Smuggler's Cove", author: "Martin Cate", coverUrl: "https://m.media-amazon.com/images/I/61npJOa0yXL.jpg" },
+                { title: "The Drunken Botanist", author: "Amy Stewart", coverUrl: "https://m.media-amazon.com/images/I/71rdIbdfukL._UF894,1000_QL80_.jpg" },
+                { title: "Imbibe!", author: "Dave Wondrich", coverUrl: "https://m.media-amazon.com/images/I/81a6TUP6PsL.jpg" },
+                { title: "Meehan's Bartender Manual", author: "Jim Meehan", coverUrl: "https://m.media-amazon.com/images/I/91ZBCtHuVAL._UF1000,1000_QL80_.jpg" },
+                { title: "Bitters", author: "Brad Thomas Parsons", coverUrl: "https://m.media-amazon.com/images/I/91l6CkVNMkL.jpg" },
+                { title: "Amaro", author: "Brad Thomas Parsons", coverUrl: "https://m.media-amazon.com/images/I/81T7gtqxm4L.jpg" },
+                { title: "Beach Bum Berry Remixed", author: "Jeff Berry", coverUrl: "https://beachbumberry.com/img/remixed-cover.jpg" },
+                { title: "The Canon Cocktail Book", author: "Jamie Boudreau", coverUrl: "https://m.media-amazon.com/images/I/7171mi+iujL._UF1000,1000_QL80_.jpg" },
+                { title: "Regarding Cocktails", author: "Sasha Petraske", coverUrl: "https://m.media-amazon.com/images/I/91Nb+CXQV+L.jpg" }
+            ]
+        };
+
+        const catalogElement = document.getElementById('book-catalog');
+        const modalElement = document.getElementById('book-modal');
+        const modalContentElement = document.getElementById('modal-content');
+        
+        // Utility function to generate a unique, clean ID from a string
+        const slugify = (text) => {
+            return text.toLowerCase()
+                .trim()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/[\s_-]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        };
+
+        // Function to render the catalog
+        const renderCatalog = () => {
+            let html = '';
+
+            for (const section in bookData) {
+                const books = bookData[section];
+                
+                html += `
+                    <section class="mb-8">
+                        <h2 class="text-3xl font-bold mb-6 text-gray-200 border-b border-gray-700 pb-2">
+                            ${section}
+                        </h2>
+                        <!-- Responsive Grid: 2 columns on all devices -->
+                        <div class="grid grid-cols-2 gap-4 sm:gap-6">
+                `;
+                
+                books.forEach(book => {
+                    // Create a unique ID for JSON string passing (safer than long URLs)
+                    const bookId = slugify(book.title + book.author);
+
+                    // We need to safely stringify the book object to pass it to the onclick handler
+                    const bookJson = JSON.stringify(book).replace(/'/g, '&#39;');
+
+                    html += `
+                        <div class="text-center cursor-pointer transition transform hover:scale-[1.02] active:scale-[0.98] duration-200 ease-in-out" 
+                             onclick="openModal(${bookJson})">
+                            <img src="${book.coverUrl}" 
+                                 alt="Cover of ${book.title}" 
+                                 class="book-cover w-full rounded-xl shadow-xl border border-gray-700 mx-auto"
+                                 loading="lazy" />
+                            <p class="mt-2 text-sm font-medium leading-tight text-gray-400 truncate w-full px-1">${book.title}</p>
+                            <p class="text-xs text-gray-500 hidden sm:block">${book.author}</p>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </section>
+                `;
+            }
+
+            catalogElement.innerHTML = html;
+        };
+
+        // Function to open the modal
+        const openModal = (book) => {
+            const modalHtml = `
+                <div class="text-center">
+                    <img src="${book.coverUrl}" 
+                         alt="Cover of ${book.title}" 
+                         class="book-cover w-2/3 mx-auto rounded-lg shadow-xl mb-4 border border-gray-700" />
+                    <h3 class="text-2xl font-bold text-white mb-2">${book.title}</h3>
+                    <p class="text-lg text-gray-400 mb-6">by ${book.author}</p>
+                    
+                    <a href="#" class="inline-block w-full px-6 py-4 bg-lime-600 text-black font-semibold rounded-xl text-lg shadow-2xl 
+                                      hover:bg-lime-500 transition duration-150 transform hover:scale-[1.01]" 
+                       onclick="window.alert('Simulated download for: ${book.title}'); return false;">
+                        Download/View Book
+                    </a>
+                    <p class="text-xs mt-3 text-gray-500">
+                        (Download is simulated for demonstration)
+                    </p>
+                </div>
+            `;
+
+            modalContentElement.innerHTML = modalHtml;
+            modalElement.classList.remove('hidden');
+            // Optional: prevent background scrolling
+            document.body.style.overflow = 'hidden';
+        };
+
+        // Function to close the modal
+        const closeModal = (event) => {
+            // Check if the click was directly on the overlay or if event is undefined (e.g., from Close button)
+            if (event && event.target !== modalElement) {
+                return;
+            }
+            modalElement.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        // Initialize the catalog on window load
+        window.onload = renderCatalog;
+
+        // Custom alert function (since alert() is disabled)
+        window.alert = function(message) {
+            const alertModal = document.createElement('div');
+            alertModal.innerHTML = `
+                <div class="fixed inset-0 z-[100] bg-black bg-opacity-80 flex items-center justify-center p-4" onclick="this.remove()">
+                    <div class="bg-gray-800 text-white p-6 rounded-lg shadow-2xl max-w-sm w-full" onclick="event.stopPropagation()">
+                        <h4 class="text-xl font-bold mb-3 text-lime-400">Action Complete</h4>
+                        <p class="mb-4">${message}</p>
+                        <button class="w-full py-2 bg-lime-600 text-black font-semibold rounded-lg hover:bg-lime-500" onclick="this.closest('.fixed').remove()">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(alertModal);
+        };
+    </script>
+
+</body>
+</html>
