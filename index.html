@@ -62,61 +62,37 @@
 
     </div>
 
-    <!-- Modal for Book Details and Download Option -->
-    <div id="book-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-95 p-4 sm:p-8" onclick="closeModal(event)">
-        <div class="max-w-sm mx-auto my-12 bg-gray-900 p-6 rounded-xl shadow-2xl" onclick="event.stopPropagation()">
-            <div id="modal-content">
-                <!-- Book details will be injected here -->
-            </div>
-            <div class="mt-6 text-right">
-                <button onclick="closeModal()" class="px-6 py-3 bg-gray-700 text-white rounded-lg shadow-lg hover:bg-gray-600 transition duration-150">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Define the book data with titles, authors, and real cover URLs
+        // Define the book data with titles, authors, cover URLs, and the new download URLs
         const bookData = {
             "Beginner Cocktails": [
-                { title: "The Bar Book", author: "Jeffrey Morgenthaler", coverUrl: "https://m.media-amazon.com/images/I/91QkXO+aqsL.jpg" },
-                { title: "12 Bottle Bar", author: "David and Lesley Solmonson", coverUrl: "https://m.media-amazon.com/images/I/81tUJ2pv5bL.jpg" },
-                { title: "Death & Co.", author: "David Kaplan", coverUrl: "https://m.media-amazon.com/images/I/71YSHQg-bgL._UF894,1000_QL80_.jpg" },
-                { title: "The PDT Cocktail Book", author: "Jim Meehan", coverUrl: "https://cdn.foyles.co.uk/bookjackets/large/9781/4027/9781402779237.jpg" },
-                { title: "The Joy of Mixology", author: "Gary Regan", coverUrl: "https://m.media-amazon.com/images/I/51gHn9wGkYL._UF894,1000_QL80_.jpg" },
-                { title: "The Savoy Cocktail Book", author: "Harry Craddock", coverUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1328840837i/2087365.jpg" },
-                { title: "Vintage Spirits and Forgotten Cocktails", author: "Ted Haigh", coverUrl: "https://m.media-amazon.com/images/I/A1fhIRlvGuL.jpg" },
-                { title: "Regarding Cocktails", author: "Sasha Petraske", coverUrl: "https://m.media-amazon.com/images/I/91Nb+CXQV+L.jpg" },
-                { title: "The Fine Art of Mixing Drinks", author: "David Embury", coverUrl: "https://m.media-amazon.com/images/I/81hImUFQWYL.jpg" }
+                { title: "The Bar Book", author: "Jeffrey Morgenthaler", coverUrl: "https://m.media-amazon.com/images/I/91QkXO+aqsL.jpg", downloadUrl: "https://drive.google.com/file/d/1UWXqPv6CCG-Cq8RZ9c87-jYfyYFXArGv/view?usp=drive_link" },
+                { title: "12 Bottle Bar", author: "David and Lesley Solmonson", coverUrl: "https://m.media-amazon.com/images/I/81tUJ2pv5bL.jpg", downloadUrl: "https://drive.google.com/file/d/1UAadT0U5WUX7PeFy-9VojfWkytXw5OHi/view?usp=drive_link" },
+                { title: "Death & Co.", author: "David Kaplan", coverUrl: "https://m.media-amazon.com/images/I/71YSHQg-bgL._UF894,1000_QL80_.jpg", downloadUrl: "https://drive.google.com/file/d/1J5BNhvNSmwOZ_AxFs1K4WcgNR4RM5TAl/view?usp=drive_link" },
+                { title: "The PDT Cocktail Book", author: "Jim Meehan", coverUrl: "https://cdn.foyles.co.uk/bookjackets/large/9781/4027/9781402779237.jpg", downloadUrl: "https://drive.google.com/file/d/1q-iPuEPeFvIwObiu7sIr5vR0Z6iUvyJP/view?usp=drive_link" },
+                { title: "The Joy of Mixology", author: "Gary Regan", coverUrl: "https://m.media-amazon.com/images/I/51gHn9wGkYL._UF894,1000_QL80_.jpg", downloadUrl: "https://drive.google.com/file/d/1JeNCTLXuf8ai3TpF_6Dxu48BFEFkpBDp/view?usp=drive_link" },
+                { title: "The Savoy Cocktail Book", author: "Harry Craddock", coverUrl: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1328840837i/2087365.jpg", downloadUrl: "https://drive.google.com/file/d/1IXV0qsY94msbpUA2QKw0wh3pOvMzXe7A/view?usp=drive_link" },
+                { title: "Vintage Spirits and Forgotten Cocktails", author: "Ted Haigh", coverUrl: "https://m.media-amazon.com/images/I/A1fhIRlvGuL.jpg", downloadUrl: "https://drive.google.com/file/d/1WMmXXQhR2oUPX0-s-jrh9g6K2iMUQWyj/view?usp=drive_link" },
+                { title: "Regarding Cocktails", author: "Sasha Petraske", coverUrl: "https://m.media-amazon.com/images/I/91Nb+CXQV+L.jpg", downloadUrl: "https://drive.google.com/file/d/1SEPfSbpCGGR4-bjMABtdIalF1PcW4zoC/view?usp=drive_link" },
+                { title: "The Fine Art of Mixing Drinks", author: "David Embury", coverUrl: "https://m.media-amazon.com/images/I/81hImUFQWYL.jpg", downloadUrl: "https://drive.google.com/file/d/1e20cRErWDkEHDv8wI0iesCMCo-TxMREn/view?usp=drive_link" }
             ],
             "Intermediate Cocktails": [
-                { title: "Liquid Intelligence", author: "Dave Arnold", coverUrl: "https://m.media-amazon.com/images/I/61lvP3+syOL.jpg" },
-                { title: "Smuggler's Cove", author: "Martin Cate", coverUrl: "https://m.media-amazon.com/images/I/61npJOa0yXL.jpg" },
-                { title: "The Drunken Botanist", author: "Amy Stewart", coverUrl: "https://m.media-amazon.com/images/I/71rdIbdfukL._UF894,1000_QL80_.jpg" },
-                { title: "Imbibe!", author: "Dave Wondrich", coverUrl: "https://m.media-amazon.com/images/I/81a6TUP6PsL.jpg" },
-                { title: "Meehan's Bartender Manual", author: "Jim Meehan", coverUrl: "https://m.media-amazon.com/images/I/91ZBCtHuVAL._UF1000,1000_QL80_.jpg" },
-                { title: "Bitters", author: "Brad Thomas Parsons", coverUrl: "https://m.media-amazon.com/images/I/91l6CkVNMkL.jpg" },
-                { title: "Amaro", author: "Brad Thomas Parsons", coverUrl: "https://m.media-amazon.com/images/I/81T7gtqxm4L.jpg" },
-                { title: "Beach Bum Berry Remixed", author: "Jeff Berry", coverUrl: "https://beachbumberry.com/img/remixed-cover.jpg" },
-                { title: "The Canon Cocktail Book", author: "Jamie Boudreau", coverUrl: "https://m.media-amazon.com/images/I/7171mi+iujL._UF1000,1000_QL80_.jpg" },
-                { title: "Regarding Cocktails", author: "Sasha Petraske", coverUrl: "https://m.media-amazon.com/images/I/91Nb+CXQV+L.jpg" }
+                { title: "Liquid Intelligence", author: "Dave Arnold", coverUrl: "https://m.media-amazon.com/images/I/61lvP3+syOL.jpg", downloadUrl: "https://drive.google.com/file/d/1z53-1yUHMuQ88ASRYtJ0SkRS1cJ3Tl6A/view?usp=drive_link" },
+                { title: "Smuggler's Cove", author: "Martin Cate", coverUrl: "https://m.media-amazon.com/images/I/61npJOa0yXL.jpg", downloadUrl: "https://drive.google.com/file/d/1ovsuIglpgpk5qs5yJJgeWWq_qyLjh6DT/view?usp=drive_link" },
+                { title: "The Drunken Botanist", author: "Amy Stewart", coverUrl: "https://m.media-amazon.com/images/I/71rdIbdfukL._UF894,1000_QL80_.jpg", downloadUrl: "https://drive.google.com/file/d/1Z-ICMy4GLfEykleeUc8LAt6r83-dRj9v/view?usp=drive_link" },
+                { title: "Imbibe!", author: "Dave Wondrich", coverUrl: "https://m.media-amazon.com/images/I/81a6TUP6PsL.jpg", downloadUrl: "https://drive.google.com/file/d/1HzbPGLQ5-1L2VtKx7LYBfkfpx4OOsXIa/view?usp=drive_link" },
+                { title: "Meehan's Bartender Manual", author: "Jim Meehan", coverUrl: "https://m.media-amazon.com/images/I/91ZBCtHuVAL._UF1000,1000_QL80_.jpg", downloadUrl: "https://drive.google.com/file/d/1jtK0KmYyZGK1F2w3c-wKeUrgSWJj90fm/view?usp=drive_link" },
+                { title: "Bitters", author: "Brad Thomas Parsons", coverUrl: "https://m.media-amazon.com/images/I/91l6CkVNMkL.jpg", downloadUrl: "https://drive.google.com/file/d/1G0XVxIKy81XBnKMYXfCp6kb6A8rgPhYN/view?usp=drive_link" },
+                { title: "Amaro", author: "Brad Thomas Parsons", coverUrl: "https://m.media-amazon.com/images/I/81T7gtqxm4L.jpg", downloadUrl: "https://drive.google.com/file/d/1DeNMYh3Gwb1PUiCjBKNuPhEyRLnq5hCg/view?usp=drive_link" },
+                { title: "Beach Bum Berry Remixed", author: "Jeff Berry", coverUrl: "https://beachbumberry.com/img/remixed-cover.jpg", downloadUrl: "https://drive.google.com/file/d/1XrcCFfzA92h7Fo9te3BAobaKL8NcXR4w/view?usp=drive_link" },
+                { title: "The Canon Cocktail Book", author: "Jamie Boudreau", coverUrl: "https://m.media-amazon.com/images/I/7171mi+iujL._UF1000,1000_QL80_.jpg", downloadUrl: "https://drive.google.com/file/d/1iZfV0zJF9dySUDSGoO1_Scnwm6L8Kao-/view?usp=drive_link" },
+                // Note: "Regarding Cocktails by Sasha Petraske" is listed again here, reusing the same data/link.
+                { title: "Regarding Cocktails", author: "Sasha Petraske", coverUrl: "https://m.media-amazon.com/images/I/91Nb+CXQV+L.jpg", downloadUrl: "https://drive.google.com/file/d/1SEPfSbpCGGR4-bjMABtdIalF1PcW4zoC/view?usp=drive_link" }
             ]
         };
 
         const catalogElement = document.getElementById('book-catalog');
-        const modalElement = document.getElementById('book-modal');
-        const modalContentElement = document.getElementById('modal-content');
         
-        // Utility function to generate a unique, clean ID from a string
-        const slugify = (text) => {
-            return text.toLowerCase()
-                .trim()
-                .replace(/[^\w\s-]/g, '')
-                .replace(/[\s_-]+/g, '-')
-                .replace(/^-+|-+$/g, '');
-        };
-
         // Function to render the catalog
         const renderCatalog = () => {
             let html = '';
@@ -134,22 +110,17 @@
                 `;
                 
                 books.forEach(book => {
-                    // Create a unique ID for JSON string passing (safer than long URLs)
-                    const bookId = slugify(book.title + book.author);
-
-                    // We need to safely stringify the book object to pass it to the onclick handler
-                    const bookJson = JSON.stringify(book).replace(/'/g, '&#39;');
-
+                    // Changed the surrounding element to an <a> tag that links directly to the downloadUrl
                     html += `
-                        <div class="text-center cursor-pointer transition transform hover:scale-[1.02] active:scale-[0.98] duration-200 ease-in-out" 
-                             onclick="openModal(${bookJson})">
+                        <a href="${book.downloadUrl}" target="_blank"
+                           class="text-center block transition transform hover:scale-[1.02] active:scale-[0.98] duration-200 ease-in-out">
                             <img src="${book.coverUrl}" 
                                  alt="Cover of ${book.title}" 
                                  class="book-cover w-full rounded-xl shadow-xl border border-gray-700 mx-auto"
                                  loading="lazy" />
                             <p class="mt-2 text-sm font-medium leading-tight text-gray-400 truncate w-full px-1">${book.title}</p>
                             <p class="text-xs text-gray-500 hidden sm:block">${book.author}</p>
-                        </div>
+                        </a>
                     `;
                 });
 
@@ -162,53 +133,16 @@
             catalogElement.innerHTML = html;
         };
 
-        // Function to open the modal
-        const openModal = (book) => {
-            const modalHtml = `
-                <div class="text-center">
-                    <img src="${book.coverUrl}" 
-                         alt="Cover of ${book.title}" 
-                         class="book-cover w-2/3 mx-auto rounded-lg shadow-xl mb-4 border border-gray-700" />
-                    <h3 class="text-2xl font-bold text-white mb-2">${book.title}</h3>
-                    <p class="text-lg text-gray-400 mb-6">by ${book.author}</p>
-                    
-                    <a href="#" class="inline-block w-full px-6 py-4 bg-lime-600 text-black font-semibold rounded-xl text-lg shadow-2xl 
-                                      hover:bg-lime-500 transition duration-150 transform hover:scale-[1.01]" 
-                       onclick="window.alert('Simulated download for: ${book.title}'); return false;">
-                        Download/View Book
-                    </a>
-                    <p class="text-xs mt-3 text-gray-500">
-                        (Download is simulated for demonstration)
-                    </p>
-                </div>
-            `;
-
-            modalContentElement.innerHTML = modalHtml;
-            modalElement.classList.remove('hidden');
-            // Optional: prevent background scrolling
-            document.body.style.overflow = 'hidden';
-        };
-
-        // Function to close the modal
-        const closeModal = (event) => {
-            // Check if the click was directly on the overlay or if event is undefined (e.g., from Close button)
-            if (event && event.target !== modalElement) {
-                return;
-            }
-            modalElement.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        };
-
         // Initialize the catalog on window load
         window.onload = renderCatalog;
 
-        // Custom alert function (since alert() is disabled)
+        // Custom alert function (since alert() is disabled) - kept for robustness
         window.alert = function(message) {
             const alertModal = document.createElement('div');
             alertModal.innerHTML = `
                 <div class="fixed inset-0 z-[100] bg-black bg-opacity-80 flex items-center justify-center p-4" onclick="this.remove()">
                     <div class="bg-gray-800 text-white p-6 rounded-lg shadow-2xl max-w-sm w-full" onclick="event.stopPropagation()">
-                        <h4 class="text-xl font-bold mb-3 text-lime-400">Action Complete</h4>
+                        <h4 class="text-xl font-bold mb-3 text-lime-400">Notice</h4>
                         <p class="mb-4">${message}</p>
                         <button class="w-full py-2 bg-lime-600 text-black font-semibold rounded-lg hover:bg-lime-500" onclick="this.closest('.fixed').remove()">
                             OK
